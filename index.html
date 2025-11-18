@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tastik / VoicePi App</title>
+
+  <!-- Pi Network SDK -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      text-align: center;
+    }
+
+    .box {
+      margin-top: 80px;
+    }
+
+    button {
+      padding: 12px 25px;
+      margin-top: 20px;
+      background: #a020f0;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h1>Tastik / VoicePi App Connected</h1>
+    <p>Welcome Pioneer!</p>
+
+    <button onclick="startAuth()">Connect With Pi</button>
+
+    <p id="username" style="margin-top: 15px; font-size: 18px;"></p>
+  </div>
+
+  <script>
+    // Step 1: Initialize Pi SDK
+    Pi.init({ version: "2.0" });
+
+    async function startAuth() {
+      try {
+        const scopes = ['username', 'payments'];
+        const auth = await Pi.authenticate(scopes, onIncompletePayment);
+
+        document.getElementById("username").innerText =
+          "Connected as: @" + auth.user.username;
+
+      } catch (err) {
+        console.error("Auth Failed", err);
+      }
+    }
+
+    function onIncompletePayment(payment) {
+      console.log("Incomplete Payment Detected:", payment);
+    }
+  </script>
+
+</body>
+  </html>
